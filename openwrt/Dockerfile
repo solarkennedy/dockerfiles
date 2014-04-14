@@ -9,7 +9,7 @@ RUN wget http://downloads.openwrt.org/attitude_adjustment/12.09/x86/generic/open
 RUN gunzip openwrt-x86-generic-rootfs.tar.gz
 RUN rm -rf var
 RUN /bin/busybox tar -x --exclude=./etc/resolv.conf --exclude=./etc/hosts -f openwrt-x86-generic-rootfs.tar
-RUN /bin/busybox rm openwrt-x86-generic-rootfs.tar
+RUN ["/bin/busybox", "rm", "openwrt-x86-generic-rootfs.tar"]
 
 RUN uci delete network.lan.type
 RUN uci delete network.lan.ipaddr
