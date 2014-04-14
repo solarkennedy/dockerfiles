@@ -8,5 +8,14 @@ MAINTAINER Kyle Anderson <kyle@xkyle.com>
 RUN wget http://downloads.openwrt.org/attitude_adjustment/12.09/x86/generic/openwrt-x86-generic-rootfs.tar.gz
 RUN gunzip openwrt-x86-generic-rootfs.tar.gz
 RUN rm -rf var
-RUN busybox tar -x --exclude=./etc/resolv.conf --exclude=./etc/hosts -f openwrt-x86-generic-rootfs.tar
-RUN busybox rm openwrt-x86-generic-rootfs.tar
+RUN tar -x --exclude=./etc/resolv.conf --exclude=./etc/hosts -f openwrt-x86-generic-rootfs.tar
+RUN rm openwrt-x86-generic-rootfs.tar
+
+RUN uci delete network.lan.type
+RUN uci delete network.lan.ipaddr
+RUN uci delete network.lan.netmask
+RUN uci set network.lan.proto=dhcp
+RUN uci commit
+RUN /etc/init.d/firewall disable
+
+CMD /sbin/init
