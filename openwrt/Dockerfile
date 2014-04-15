@@ -18,11 +18,11 @@ RUN tar -x --exclude=./etc/resolv.conf --exclude=./etc/hosts -f openwrt-x86-gene
 # From here we have to use the static version of busybox, since our libraries are all messed up
 RUN ["/busybox-static", "rm", "openwrt-x86-generic-rootfs.tar"]
 
-RUN uci delete network.lan.type
-RUN uci delete network.lan.ipaddr
-RUN uci delete network.lan.netmask
-RUN uci set network.lan.proto=dhcp
-RUN uci commit
-RUN /etc/init.d/firewall disable
+RUN ["/sbin/uci", "delete", "network.lan.type" ]
+RUN ["/sbin/uci", "delete", "network.lan.ipaddr" ]
+RUN ["/sbin/uci", "delete", "network.lan.netmask" ]
+RUN ["/sbin/uci", "set", "network.lan.proto=dhcp" ]
+RUN ["/sbin/uci", "commit" ]
+RUN ["/busybox-static", "/bin/ash", "/etc/init.d/firewall", "disable"]
 
 CMD /sbin/init
