@@ -18,11 +18,7 @@ RUN ["/busybox-x86_64", "tar", "-x", "--exclude=./etc/resolv.conf", "--exclude=.
 RUN ["/busybox-x86_64", "rm", "openwrt-x86-generic-rootfs.tar"]
 
 # Convert the default networking in openwrt to be static for the one interface
-RUN ["/sbin/uci", "delete", "network.lan.type" ]
-RUN ["/sbin/uci", "delete", "network.lan.ipaddr" ]
-RUN ["/sbin/uci", "delete", "network.lan.netmask" ]
-RUN ["/sbin/uci", "set", "network.lan.proto=dhcp" ]
-RUN ["/sbin/uci", "commit" ]
-RUN ["/busybox-x86_64", "/bin/ash", "/etc/init.d/firewall", "disable"]
+ADD network /etc/config/network
+RUN ["/busybox-x86_64", "rm", "/etc/rc.d/S45firewall"]
 
 CMD /sbin/init
