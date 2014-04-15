@@ -19,6 +19,14 @@ RUN ["/busybox-x86_64", "rm", "openwrt-x86-generic-rootfs.tar"]
 
 # Convert the default networking in openwrt to be static for the one interface
 ADD network /etc/config/network
-RUN ["/busybox-x86_64", "rm", "/etc/rc.d/S45firewall"]
+ADD system /etc/config/system
 
+# These end up setting kernel things we can't really set in docker
+RUN ["/busybox-x86_64", "rm", "/etc/rc.d/S45firewall"]
+RUN ["/busybox-x86_64", "rm", "/etc/rc.d/S05luci_fixtime"]
+RUN ["/busybox-x86_64", "rm", "/etc/rc.d/S60dnsmasq"]
+RUN ["/busybox-x86_64", "rm", "/etc/rc.d/S99sysctl"]
+RUN ["/busybox-x86_64", "rm", "/etc/rc.d/S98sysntpd"]
+
+USER root
 CMD /sbin/init
